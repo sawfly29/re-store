@@ -1,8 +1,8 @@
 export default class BookstoreService {
   getBooks() {
     return [
-      { author: "Author 1", title: "Title !1", id: 1 },
-      { author: "Author 2", title: "Title 2", id: 2 },
+      { author: "Author 1", title: "Title !1", id: 1, price: 11, coverImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3anxHNcpS4-UDAPgX5uuXCnDOALAcLngj9p_NtnsWsNsOr9h05DHqMLFloYzGWzmCC-UbA06l&usqp=CAc' },
+      { author: "Author 2", title: "Title 2", id: 2, price: 22, coverImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHXfEltdVZR4twzQ545enk8mFhZA5uuhpADGDHoeTWCdKa-i7aJR3YMBJ3hYiUwUS0CweeqcE&usqp=CAc' }
     ];
   }
 }
