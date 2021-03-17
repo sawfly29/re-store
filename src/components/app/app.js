@@ -4,11 +4,13 @@ import React from "react";
 import { Route, Switch } from 'react-router-dom'
 import CartPage from "../pages/cart-page";
 import HomePage from "../pages/home-page";
+import ShopHeader from "../shop-header";
 
 const App = () => {
 
     return (
         <main role='main' className='container'>
+            <ShopHeader total={12}  numItems={2}/>
             <Switch>
                 <Route
                     path='/'

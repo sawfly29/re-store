@@ -3,8 +3,8 @@ import BookListItem from "../book-list-item";
 import { connect } from "react-redux";
 import {withBookstoreService} from '../hoc'
 import {booksLoaded} from '../../actions'
+import Spinner from '../spinner'
 //import {bindActionCreators} from 'redux'
-
 import './book-list.css'
 
 class BooklList extends React.Component {
@@ -12,14 +12,17 @@ class BooklList extends React.Component {
     componentDidMount(){
        // 1) получение данных при монтировании объекта из сервиса (контекст!)
        const {bookStoreService} = this.props;
-       const data = bookStoreService.getBooks()
+        bookStoreService.getBooks()
+       .then((data) => {this.props.booksLoaded(data)})
        
 
-       //2 dispatch action to store
-       this.props.booksLoaded(data)
+       //2 dispatch action to store - для синхронного варианта:
+      //  this.props.booksLoaded(data)
     }
   render() {
-    const { books } = this.props;
+    const { books, loading } = this.props;
+
+    if (loading){return (<Spinner />)}
 
     return (
       <ul>
@@ -35,7 +38,7 @@ class BooklList extends React.Component {
   }
 }
 const mapStateToProps = (state) => {
-    return{books: state.books}
+    return{books: state.books, loading: state.loading}
 }//в наш компонент надо передать книги из редьюсера
 
 const mapDispatchToProps = {booksLoaded}

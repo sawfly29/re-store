@@ -1,5 +1,5 @@
-import React, {Fragment} from 'react'
-import './bookilist-item.css'
+import React from 'react'
+import './book-list-item.css'
 
 const BookListItem = ({book}) => {
     const {author, title, price, coverImage} = book;
@@ -10,9 +10,10 @@ const BookListItem = ({book}) => {
                 <img src={coverImage} alt='cover'/>
             </div>
             <div className='book-details'>
-                <a href='#' className = 'book-title'>{title}</a>
+                <span className = 'book-title'>{title}</span>
                 <div className='book-author'>{author}</div>
                 <div className='book-price'>{price}</div>
+            <button className='btn btn-primary'>Add to cart</button>
             </div>
         </div>
     )
