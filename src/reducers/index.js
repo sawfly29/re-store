@@ -21,8 +21,8 @@ const reducer = (state = initialState, action) => {
     case "BOOKS_ERROR":
       return {
         books: [],
-        loading: true,
-        error: true
+        loading: false,
+        error: action.payload
       };
 
     default:

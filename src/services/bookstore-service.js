@@ -8,8 +8,10 @@ export default class BookstoreService {
   getBooks() {
     return new Promise ((resolve, reject)=> {
       setTimeout(() => {
-        //return resolve(this.data)
-        return reject(new Error ('error!'))
+        let rnd = Math.random();
+
+        if (rnd > 0.75){return reject(new Error ('error!'))}
+        else {return resolve(this.data)}
       }, 700);
     })
   }

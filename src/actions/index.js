@@ -4,7 +4,7 @@ const booksLoaded = (newBooks) => {
 const booksRequested = () => {
   return { type: "BOOKS_REQUESTED"};
 };
-const booksError = () => {
-  return { type: "BOOKS_ERROR"};
+const booksError = (err) => {
+  return { type: "BOOKS_ERROR", payload: err};
 };
 export { booksLoaded, booksRequested, booksError };
