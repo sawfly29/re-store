@@ -13,7 +13,7 @@ const withBookstoreService = () => (Wrapped) => {
           (bookStoreService) => {
               //console.log('props', props)//объект пропсов
               //console.log('bookStoreService', bookStoreService)//сервис букстора
-              console.log(Wrapped)
+              //console.log(Wrapped)
             return (<Wrapped {...props}
                 bookStoreService={bookStoreService}/>);
           }
