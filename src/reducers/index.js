@@ -32,18 +32,35 @@ const reducer = (state = initialState, action) => {
 
     case "BOOK_ADDED_TO_CART":
       const bookId = action.payload;
-
       const book = state.books.find((book) => {return book.id === bookId});
-      console.log(book)
+
+      //проверим книгу в тележке, если есть - увеличим ее количество и вернем стейт
+      const bookInCart=state.cartItems.find((bookInCart) => {return bookInCart.id === bookId})
+  
+      if (bookInCart){
+        const count = bookInCart.count + 1;
+        const totalPrice = book.price * count
+        const addedItem = {
+          id: bookInCart.id, 
+          title: bookInCart.title,
+          count,
+          total: totalPrice,
+        }
+
+        let cartItemsCopy = [...state.cartItems];
+        cartItemsCopy[state.cartItems.findIndex((book) => {return book.id === bookId})] = addedItem
+
+        return { ...state, cartItems: cartItemsCopy };
+      }
+  else{
       const newItem = {
         id: book.id,
-        name: book.title,
+        title: book.title,
         count: 1,
         total: book.price,
       };
       
-      console.log(newItem);
-      return { ...state, cartItems: [...state.cartItems, newItem] };
+      return { ...state, cartItems: [...state.cartItems, newItem] }};
 
     default:
       return state;
