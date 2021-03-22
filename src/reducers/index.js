@@ -6,6 +6,28 @@ const initialState = {
   orderTotal: 145,
 };
 
+//обновление единицы товара (книги) - 147 lesson
+const updateCartItem = (book, item = {}) => {
+  const {id = book.id, title = book.title, total = 0, count = 0} = item;
+
+  return {
+    id,
+    title,
+    count: count + 1,
+    total: total + book.price
+  }
+
+}
+//обновление списка товаров в корзине
+const updateCartItems = (cartItems = {}, newItem, idx) => {
+  if (idx === -1) {return [...cartItems, newItem]}
+  else return [
+    ...cartItems.slice(0, idx),
+    newItem,
+    ...cartItems.slice(idx+1)
+]
+}
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case "FETCH_BOOKS_SUCCESS":
@@ -34,33 +56,18 @@ const reducer = (state = initialState, action) => {
       const bookId = action.payload;
       const book = state.books.find((book) => {return book.id === bookId});
 
-      //проверим книгу в тележке, если есть - увеличим ее количество и вернем стейт
-      const bookInCart=state.cartItems.find((bookInCart) => {return bookInCart.id === bookId})
-  
-      if (bookInCart){
-        const count = bookInCart.count + 1;
-        const totalPrice = book.price * count
-        const addedItem = {
-          id: bookInCart.id, 
-          title: bookInCart.title,
-          count,
-          total: totalPrice,
-        }
+      //индекс книги в тележке, далее - сама книга
+      const itemIndex = state.cartItems.findIndex((book) => {return book.id === bookId})
+      const  item = state.cartItems[itemIndex]
 
-        let cartItemsCopy = [...state.cartItems];
-        cartItemsCopy[state.cartItems.findIndex((book) => {return book.id === bookId})] = addedItem
+      const newItem = updateCartItem(book, item)
 
-        return { ...state, cartItems: cartItemsCopy };
+      return {
+        ...state,
+        cartItems: updateCartItems(state.cartItems, newItem, itemIndex)
       }
-  else{
-      const newItem = {
-        id: book.id,
-        title: book.title,
-        count: 1,
-        total: book.price,
-      };
-      
-      return { ...state, cartItems: [...state.cartItems, newItem] }};
+  
+
 
     default:
       return state;

@@ -65,7 +65,6 @@ const mapDispatchToProps = (dispatch, { bookStoreService }) => {
   //const { bookStoreService } = ownProps; в ходе рефакторинга деструктурировали из ownprops bSS
 
 
-console.log(bookAddedToCart)
   return {
     fetchBooks: fetchBooks(bookStoreService, dispatch),
     onAddedToCart: (id)=> dispatch(bookAddedToCart(id))

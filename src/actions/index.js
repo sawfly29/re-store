@@ -17,7 +17,7 @@ const fetchBooks = (bookStoreService, dispatch) => () => {
 };
 
 const bookAddedToCart = (bookId) => {
-  console.log(bookId)
+ 
   return {
     type: "BOOK_ADDED_TO_CART",
     payload: bookId
