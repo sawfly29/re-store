@@ -1,3 +1,4 @@
+
 import {
   FETCH_BOOKS_FAILURE,
   FETCH_BOOKS_SUCCESS,
@@ -15,14 +16,6 @@ const booksRequested = () => {
 };
 const booksError = (err) => {
   return { type: FETCH_BOOKS_FAILURE, payload: err };
-};
-
-const fetchBooks = (bookStoreService, dispatch) => () => {
-  dispatch(booksRequested());
-  bookStoreService
-    .getBooks()
-    .then((data) => dispatch(booksLoaded(data)))
-    .catch((err) => dispatch(booksError(err)));
 };
 
 const bookAddedToCart = (bookId) => {
@@ -43,6 +36,23 @@ const decreaseItemCountInCart = (itemId) => {
     type: BOOK_COUNT_DECREASED_IN_CART,
     payload: itemId,
   };
+};
+
+const fetchBooksOld = (bookStoreService, dispatch) => () => {
+  dispatch(booksRequested());
+  bookStoreService
+    .getBooks()
+    .then((data) => dispatch(booksLoaded(data)))
+    .catch((err) => dispatch(booksError(err)));
+};
+
+//ф-я примет сервис и вернет action creator, работает через thunk
+const fetchBooks = (bookStoreService) => () => (dispatch) => {
+  dispatch(booksRequested());
+  bookStoreService
+    .getBooks()
+    .then((data) => dispatch(booksLoaded(data)))
+    .catch((err) => dispatch(booksError(err)));
 };
 
 export {

@@ -5,26 +5,28 @@ import { connect } from "react-redux";
 import { withBookstoreService } from "../hoc";
 import { fetchBooks, bookAddedToCart } from "../../actions";
 import Spinner from "../spinner";
-//import {bindActionCreators} from 'redux'
+import { bindActionCreators } from "redux";
 import "./book-list.css";
 import ErrorIndicator from "../error-indicator";
 
 //рекомендуется разделить компонент на часть для оборачивания (контейнер, отвечает за логику)
 //и часть для визуального отображения (BLContainer и BL соответственно)
-const BookList = ({books, onAddedToCart})=> {
-  
+const BookList = ({ books, onAddedToCart }) => {
   return (
     <ul>
       {books.map((book) => {
         return (
           <li key={book.id}>
-            <BookListItem book={book} onAddedToCart={()=>onAddedToCart(book.id)} />
+            <BookListItem
+              book={book}
+              onAddedToCart={() => onAddedToCart(book.id)}
+            />
           </li>
         );
       })}
     </ul>
   );
-}
+};
 
 class BooklListContainer extends React.Component {
   componentDidMount() {
@@ -43,7 +45,6 @@ class BooklListContainer extends React.Component {
   render() {
     const { books, loading, error, onAddedToCart } = this.props;
 
-
     if (loading) {
       return <Spinner />;
     }
@@ -51,24 +52,30 @@ class BooklListContainer extends React.Component {
       return <ErrorIndicator />;
     }
 
-   return <BookList books = {books} onAddedToCart={onAddedToCart} />
+    return <BookList books={books} onAddedToCart={onAddedToCart} />;
   }
 }
 
-
 const mapStateToProps = (state) => {
-  return { books: state.books, loading: state.loading, error: state.error };
+  return {
+    books: state.bookList.books,
+    loading: state.bookList.loading,
+    error: state.bookList.error,
+  };
 }; //в наш компонент надо передать книги из редьюсера
 
 //const mapDispatchToProps = {booksLoaded, booksRequested, booksError} - lesson 142
 const mapDispatchToProps = (dispatch, { bookStoreService }) => {
   //const { bookStoreService } = ownProps; в ходе рефакторинга деструктурировали из ownprops bSS
 
-
-  return {
-    fetchBooks: fetchBooks(bookStoreService, dispatch),
-    onAddedToCart: (id)=> dispatch(bookAddedToCart(id))
-  };
+  // bindAC сразу вызывает диспатч для переданноых в него экшнов
+  return bindActionCreators(
+    {
+      fetchBooks: fetchBooks(bookStoreService),
+      onAddedToCart: bookAddedToCart,
+    },
+    dispatch
+  );
 };
 
 //const mapDispatchToProps = (dispatch) => {
