@@ -6,7 +6,6 @@ import {
 
 const updateCartItem = (book, item = {}, quantity) => {
     const { id = book.id, title = book.title, total = 0, count = 0 } = item;
-  
     return {
       id,
       title,
@@ -42,24 +41,35 @@ const updateCartItem = (book, item = {}, quantity) => {
     if (newItem.count < 0) {
       return state.shopingCart;
     }
+    const newCartItems = updateCartItems(cartItems, newItem, itemIndex);
+  
+    
   
     return {
-      orderTotal: 111,
-      cartItems: updateCartItems(cartItems, newItem, itemIndex),
+      orderTotal: orderTotalCalc(newCartItems),
+      cartItems: newCartItems
     };
   };
+
+  const orderTotalCalc = (newCartItems) => {
+  
+    return newCartItems.reduce((sum, item) => {return sum + item.total}, 0)
+  }
   
   
   const updateShopingCart = (state, action) => {
-    if (state === undefined){return { cartItems: [], orderTotal: 145 }}
+    if (state === undefined){return { cartItems: [], orderTotal: 0 }}
     switch (action.type) {
       case BOOK_DELETED_FROM_CART: {
         const bookId = action.payload;
         const bookIndex = state.shopingCart.cartItems.findIndex((book) => {
           return book.id === bookId;
         });
-        return {
-          cartItems: updateCartItems(state.shopingCart.cartItems, {}, bookIndex),
+        const newCartItems = updateCartItems(state.shopingCart.cartItems, {}, bookIndex)
+        
+        return {       
+          cartItems: newCartItems, 
+          orderTotal: orderTotalCalc(newCartItems),
         };
       }
   
